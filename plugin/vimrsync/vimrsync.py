@@ -9,7 +9,19 @@ def initiate_file_sync(path_to_file, options):
     # parsed_args = getopt.getopt(args, "p:", ["all"])
     # sync_app = is_sync_app(utils.get_args_list(parsed_args[0]))
     # path_arg = get_arg_value(parsed_args[0], "-p")
-    sync.run_rsync_file(path_to_file, options)
+    if is_valid_app(path_to_file, options["APPS"]):
+        sync.run_rsync_file(path_to_file, options)
+
+
+def is_valid_app(path_to_file, valid_apps=[]):
+    if not len(valid_apps):
+        return False
+
+    for i in valid_apps:
+        if path_to_file.find(i) > -1:
+            return True
+
+    return False
 
 
 def initiate_app_sync(current_working_file, options):

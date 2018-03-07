@@ -8,18 +8,24 @@ python sys.path.append(vim.eval('expand("<sfile>:h")'))
 " --------------------------------
 "  Function(s)
 " --------------------------------
-let g:SERVER_HOST = "pe1te3son@eazycoding.com"
-let g:APPS = ["test_app"]
+let g:SERVER_HOST = "testuser@test.com"
+let g:APPS = ["test_app", "another_app"]
+
 
 function! InitiateFileSync()
-
 if exists("g:SERVER_HOST")
 python << endOfPython
 from vimrsync import vimrsync
 
+# DO IT WITH TIMESTAMP
+current_c = vim.eval("g:airline_section_c")
+#vim.command("let g:airline_section_c = 'syncing "+ current_c  +"' | AirlineRefresh")
+
+
 current_working_file = vim.eval("expand('%:p')")
 vimrsync.initiate_file_sync(current_working_file, {
-  "SERVER_HOST": vim.eval("g:SERVER_HOST")
+  "SERVER_HOST": vim.eval("g:SERVER_HOST"),
+  "APPS": vim.eval("g:APPS")
 })
 endOfPython
 else
@@ -27,6 +33,8 @@ else
 endif
 
 endfunction
+
+
 
 function! InitiateAppSync()
 

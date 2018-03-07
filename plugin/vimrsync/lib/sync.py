@@ -2,8 +2,9 @@
 """ Sync files with rsync """
 import subprocess
 import pipes
-import vim
 from utils import print_error_msg, print_msg, print_success_msg
+import vim
+import time
 
 
 def run_rsync_file(file_path, options):
@@ -11,15 +12,17 @@ def run_rsync_file(file_path, options):
     server_path = options["SERVER_HOST"] + ":" + file_path
 
     try:
-        subprocess.check_output([
-            "rsync", "-a", file_path, server_path
-            ], stderr=subprocess.STDOUT)
 
-        vim.command(":silent w")
+        subprocess.Popen([
+            "rsync", "-a", file_path, server_path
+            ], shell=False, stdin=None, stdout=None, stderr=subprocess.STDOUT).pid
+
+        # time.sleep(5)
         print_msg("[ Done ]: " + server_path)
 
     except Exception as err:
-        print_error_msg(err)
+        print(err)
+        print_error_msg('Failed to sync file')
 
     # if exists_remote(options.SERVER_HOST, file_path):
     #     call(["rsync", "-a", file_path, server_path])
