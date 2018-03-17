@@ -8,8 +8,6 @@ python sys.path.append(vim.eval('expand("<sfile>:h")'))
 " --------------------------------
 "  Function(s)
 " --------------------------------
-let g:SERVER_HOST = "testuser@test.com"
-let g:APPS = ["test_app", "another_app"]
 
 
 function! InitiateFileSync()
