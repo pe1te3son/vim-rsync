@@ -43,7 +43,8 @@ from vimrsync import vimrsync
 current_working_file = vim.eval("expand('%:p')")
 vimrsync.initiate_app_sync(current_working_file, {
   "SERVER_HOST": vim.eval("g:SERVER_HOST"),
-  "APPS": vim.eval("g:APPS")
+  "APPS": vim.eval("g:APPS"),
+  "EXCLUDES": vim.eval("g:EXCLUDES")
 })
 endOfPython
 else

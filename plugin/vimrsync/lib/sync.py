@@ -30,13 +30,24 @@ def run_rsync_app(app_file_path, options):
     if app_to_sync and app_name:
         if exists_remote(options["SERVER_HOST"], app_to_sync, True):
             server_path = options["SERVER_HOST"] + ":" + app_to_sync[:app_to_sync.find(app_name) - 1]
-            print_success_msg(server_path)
+            print_success_msg(app_to_sync)
+
+            excludes = build_exclude_command(app_to_sync, options["EXCLUDES"]) or ""
             subprocess.Popen([
-                "rsync", "-a", app_to_sync, server_path, "--delete"
+                "rsync", "-a", excludes, app_to_sync, server_path, "--delete"
                 ], shell=False, stdin=None, stdout=None, stderr=subprocess.STDOUT).pid
 
         else:
             print("app not on remote server")
+
+
+def build_exclude_command(app_path, exclude_folders):
+    if not len(exclude_folders): return None
+
+    command = ""
+    for folder in exclude_folders:
+        command += "--exclude=" + folder
+    return command
 
 
 def get_app_path_to_sync(supported_apps, app_path):
